@@ -435,6 +435,18 @@
         }
       });
       footer.appendChild(dlAllBtn);
+
+      var shareBtn = document.createElement('button');
+      shareBtn.className = 'share-font-btn';
+      shareBtn.innerHTML = '&#128279; Share';
+      shareBtn.addEventListener('click', function () {
+        var deepLink = window.location.origin + '/#' + font.slug;
+        navigator.clipboard.writeText(deepLink).then(function () {
+          shareBtn.textContent = 'Copied!';
+          setTimeout(function () { shareBtn.innerHTML = '&#128279; Share'; }, 1500);
+        });
+      });
+      footer.appendChild(shareBtn);
       card.appendChild(footer);
 
       // Lazy load preview font

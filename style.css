@@ -597,6 +597,7 @@ body {
   border-top: 1px solid var(--border);
   display: flex;
   justify-content: flex-end;
+  gap: 8px;
 }
 
 .download-all-family-btn {
@@ -617,6 +618,27 @@ body {
 
 .download-all-family-btn:hover {
   background: var(--accent-hover);
+}
+
+.share-font-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-family: var(--font);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.share-font-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 /* Empty state */
