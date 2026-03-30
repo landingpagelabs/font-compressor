@@ -144,6 +144,10 @@
       btn.disabled = false;
       btn.innerHTML = 'Compress to WOFF2';
       $('#downloadAllBtn').style.display = compressedResults.length > 1 ? '' : 'none';
+      // Refresh library data so new fonts appear instantly
+      fetch('/api/library')
+        .then(function (res) { return res.json(); })
+        .then(function (data) { libraryData = data; });
     });
   }
 
