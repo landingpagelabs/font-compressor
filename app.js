@@ -434,8 +434,6 @@
           });
         }
       });
-      footer.appendChild(dlAllBtn);
-
       var shareBtn = document.createElement('button');
       shareBtn.className = 'share-font-btn';
       shareBtn.innerHTML = '&#128279; Share';
@@ -447,6 +445,7 @@
         });
       });
       footer.appendChild(shareBtn);
+      footer.appendChild(dlAllBtn);
       card.appendChild(footer);
 
       // Lazy load preview font
