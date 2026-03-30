@@ -92,6 +92,20 @@ KNOWN_STYLES = [
     "Italic", "Regular",
 ]
 
+# Build a case-insensitive lookup: lowercase -> canonical form
+_STYLE_LOOKUP = {s.lower(): s for s in KNOWN_STYLES}
+_WEIGHT_LOOKUP = {k.lower(): k for k in WEIGHT_MAP}
+
+
+def _match_style(text):
+    """Case-insensitive style matching. Returns canonical style name or None."""
+    lower = text.lower()
+    if lower in _STYLE_LOOKUP:
+        return _STYLE_LOOKUP[lower]
+    if lower in _WEIGHT_LOOKUP:
+        return _WEIGHT_LOOKUP[lower]
+    return None
+
 
 def parse_filename(filename):
     stem = filename.rsplit(".", 1)[0] if "." in filename else filename
@@ -102,10 +116,10 @@ def parse_filename(filename):
     # Try splitting on last hyphen first: FamilyName-Style
     parts = stem.rsplit("-", 1)
     if len(parts) == 2:
-        family, style = parts
-        # Validate style is a known weight/style name
-        if style in KNOWN_STYLES or style in WEIGHT_MAP:
-            return family, style
+        family, style_raw = parts
+        matched = _match_style(style_raw)
+        if matched:
+            return family, matched
         # Style part might be part of the family name (e.g. Inter18pt)
         # Fall through to style detection below
         family = stem
@@ -113,9 +127,11 @@ def parse_filename(filename):
     else:
         family = parts[0]
 
-    # No valid split found — try to detect style from the end of the name
+    # No valid split found — try to detect style from the end of the name (case-insensitive)
+    lower_family = family.lower()
     for s in KNOWN_STYLES:
-        if family.endswith(s) and len(family) > len(s):
+        sl = s.lower()
+        if lower_family.endswith(sl) and len(family) > len(s):
             return family[:-len(s)].rstrip("-"), s
 
     return family, "Regular"
