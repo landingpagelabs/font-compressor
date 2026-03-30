@@ -13,6 +13,7 @@
   let activeCategory = 'all';
   let searchQuery = '';
   let loadedFontFaces = new Set();
+  const HISTORY_KEY = 'fontcompressor_history';
 
   /* ======================================================================
      Tabs
@@ -26,6 +27,9 @@
       $('#tab-' + tab).classList.add('active');
       if (tab === 'library' && libraryData.length === 0) {
         loadLibrary();
+      }
+      if (tab === 'history') {
+        renderHistory();
       }
     });
   });
@@ -142,11 +146,21 @@
       var file = fileQueue[currentIdx];
       idx++;
       compressFile(file).then(function (result) {
+        var now = new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
         if (result.duplicate) {
           loadingEls[currentIdx].replaceWith(createDuplicateCard(result));
+          saveToHistory({ filename: file.name, type: 'duplicate', slug: result.slug, size: result.sizeWoff2, date: now });
         } else {
           loadingEls[currentIdx].replaceWith(createResultCard(result));
           compressedResults.push(result);
+          saveToHistory({
+            filename: result.filename,
+            type: result.alreadyCompressed ? 'saved' : 'compressed',
+            slug: result.slug,
+            size: result.compressedSize,
+            savings: result.alreadyCompressed ? null : result.savings,
+            date: now
+          });
         }
         processNext();
       }).catch(function (err) {
@@ -290,6 +304,75 @@
     zip.generateAsync({ type: 'blob' }).then(function (content) {
       downloadBlob(content, 'fonts-woff2.zip');
     });
+  });
+
+  /* ======================================================================
+     HISTORY
+     ====================================================================== */
+
+  function getHistory() {
+    try { return JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; }
+    catch (e) { return []; }
+  }
+
+  function saveToHistory(entry) {
+    var history = getHistory();
+    history.unshift(entry);
+    if (history.length > 200) history = history.slice(0, 200);
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+  }
+
+  function renderHistory() {
+    var list = $('#historyList');
+    var history = getHistory();
+    list.innerHTML = '';
+
+    if (history.length === 0) {
+      list.innerHTML = '<div class="empty-state"><span class="empty-state-icon">&#128196;</span>No uploads yet.</div>';
+      return;
+    }
+
+    history.forEach(function (item) {
+      var row = document.createElement('div');
+      row.className = 'history-item';
+
+      var badgeClass = item.type === 'compressed' ? 'history-badge-compressed' :
+                       item.type === 'saved' ? 'history-badge-saved' : 'history-badge-duplicate';
+      var badgeText = item.type === 'compressed' ? 'Compressed' :
+                      item.type === 'saved' ? 'Saved' : 'Duplicate';
+
+      var metaParts = [];
+      if (item.size) metaParts.push(formatSize(item.size));
+      if (item.savings) metaParts.push(item.savings + '% smaller');
+      if (item.date) metaParts.push(item.date);
+
+      row.innerHTML =
+        '<div class="history-item-info">' +
+          '<div class="history-item-name">' + escapeHtml(item.filename) + '</div>' +
+          '<div class="history-item-meta">' + metaParts.join(' &middot; ') + '</div>' +
+        '</div>' +
+        '<div class="history-item-actions">' +
+          '<span class="history-badge ' + badgeClass + '">' + badgeText + '</span>' +
+          (item.slug ? '<button class="download-btn history-link-btn" data-slug="' + item.slug + '">&#128279;</button>' : '') +
+        '</div>';
+
+      list.appendChild(row);
+    });
+
+    list.querySelectorAll('.history-link-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var deepLink = window.location.origin + '/#' + btn.getAttribute('data-slug');
+        navigator.clipboard.writeText(deepLink).then(function () {
+          btn.textContent = 'Copied!';
+          setTimeout(function () { btn.innerHTML = '&#128279;'; }, 1500);
+        });
+      });
+    });
+  }
+
+  $('#clearHistoryBtn').addEventListener('click', function () {
+    localStorage.removeItem(HISTORY_KEY);
+    renderHistory();
   });
 
   /* ======================================================================

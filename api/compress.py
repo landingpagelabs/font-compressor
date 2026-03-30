@@ -52,8 +52,9 @@ def blob_get_json(url):
 
 
 def blob_get_index():
+    import time
     try:
-        # List blobs to find index.json URL (it may have a cache-bust suffix)
+        # List blobs to find index.json URL
         req = urllib.request.Request(
             f"{BLOB_API}?prefix=index.json",
             headers={"Authorization": f"Bearer {BLOB_TOKEN}", "x-api-version": "7"},
@@ -62,7 +63,12 @@ def blob_get_index():
         data = json.loads(resp.read())
         blobs = data.get("blobs", [])
         if blobs:
-            return blob_get_json(blobs[0]["url"])
+            # Add cache-bust to avoid stale reads
+            url = blobs[0]["url"]
+            bust = f"{'&' if '?' in url else '?'}t={int(time.time() * 1000)}"
+            req2 = urllib.request.Request(url + bust)
+            resp2 = urllib.request.urlopen(req2)
+            return json.loads(resp2.read())
     except Exception:
         pass
     return []
