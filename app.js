@@ -124,31 +124,38 @@
     btn.disabled = true;
     btn.innerHTML = '<div class="spinner"></div> Compressing...';
 
-    var promises = queuedFiles.map(function (file, idx) {
-      return compressFile(file).then(function (result) {
+    // Process files sequentially to avoid index race conditions
+    var fileQueue = queuedFiles.slice();
+    var idx = 0;
+
+    function processNext() {
+      if (idx >= fileQueue.length) {
+        btn.disabled = false;
+        btn.innerHTML = 'Compress to WOFF2';
+        $('#downloadAllBtn').style.display = compressedResults.length > 1 ? '' : 'none';
+        fetch('/api/library')
+          .then(function (res) { return res.json(); })
+          .then(function (data) { libraryData = data; });
+        return;
+      }
+      var currentIdx = idx;
+      var file = fileQueue[currentIdx];
+      idx++;
+      compressFile(file).then(function (result) {
         if (result.duplicate) {
-          var dupeCard = createDuplicateCard(result);
-          loadingEls[idx].replaceWith(dupeCard);
+          loadingEls[currentIdx].replaceWith(createDuplicateCard(result));
         } else {
-          var card = createResultCard(result);
-          loadingEls[idx].replaceWith(card);
+          loadingEls[currentIdx].replaceWith(createResultCard(result));
           compressedResults.push(result);
         }
+        processNext();
       }).catch(function (err) {
-        loadingEls[idx].innerHTML = '<span style="color:#ef4444">Failed: ' + escapeHtml(file.name) + ' — ' + escapeHtml(err.message || String(err)) + '</span>';
-        loadingEls[idx].className = 'result-card-loading';
+        loadingEls[currentIdx].innerHTML = '<span style="color:#ef4444">Failed: ' + escapeHtml(file.name) + ' — ' + escapeHtml(err.message || String(err)) + '</span>';
+        loadingEls[currentIdx].className = 'result-card-loading';
+        processNext();
       });
-    });
-
-    Promise.all(promises).then(function () {
-      btn.disabled = false;
-      btn.innerHTML = 'Compress to WOFF2';
-      $('#downloadAllBtn').style.display = compressedResults.length > 1 ? '' : 'none';
-      // Refresh library data so new fonts appear instantly
-      fetch('/api/library')
-        .then(function (res) { return res.json(); })
-        .then(function (data) { libraryData = data; });
-    });
+    }
+    processNext();
   }
 
   function compressFile(file) {
