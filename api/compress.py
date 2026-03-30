@@ -272,70 +272,39 @@ class handler(BaseHTTPRequestHandler):
             blob_result = blob_put(f"fonts/{woff2_filename}", woff2_bytes, "font/woff2")
             font_url = blob_result["url"]
 
-            # Update index
-            new_variant = {
-                "style": style,
-                "weight": weight,
-                "italic": is_italic,
-                "file": woff2_filename,
-                "url": font_url,
-                "sizeOriginal": original_size,
-                "sizeWoff2": len(woff2_bytes),
-                "hash": font_hash,
-            }
+            # Auto-detect category
+            category = "sans-serif"
+            try:
+                det_font = TTFont(BytesIO(font_bytes))
+                os2 = det_font.get("OS/2")
+                if os2:
+                    fc = os2.sFamilyClass >> 8
+                    if fc in (1, 2, 3, 4, 5, 7):
+                        category = "serif"
+                    elif fc == 10:
+                        category = "monospace"
+                det_font.close()
+            except Exception:
+                pass
 
-            # Find or create family in index
-            family_entry = None
-            for fam in index:
-                if fam["slug"] == slug:
-                    family_entry = fam
-                    break
-
-            if family_entry:
-                family_entry["variants"].append(new_variant)
-                family_entry["variants"].sort(key=lambda v: (v["weight"], v.get("italic", False)))
-            else:
-                # Auto-detect category (default to sans-serif)
-                category = "sans-serif"
-                try:
-                    font = TTFont(BytesIO(font_bytes))
-                    os2 = font.get("OS/2")
-                    if os2:
-                        fc = os2.sFamilyClass >> 8
-                        if fc in (1, 2, 3, 4, 5, 7):
-                            category = "serif"
-                        elif fc == 8:
-                            category = "sans-serif"
-                        elif fc == 10:
-                            category = "monospace"
-                    font.close()
-                except Exception:
-                    pass
-
-                family_entry = {
-                    "family": family_name,
-                    "slug": slug,
-                    "category": category,
-                    "variants": [new_variant],
-                }
-                index.append(family_entry)
-                index.sort(key=lambda f: f["family"].lower())
-
-            # Save updated index
-            save_index(index)
-
-            # Return compressed font + library info
+            # Return font data — index update happens via /api/save batch endpoint
             return send_json(self, 200, {
                 "duplicate": False,
                 "alreadyCompressed": is_woff2,
                 "filename": woff2_filename,
                 "fontName": font_name,
+                "family": family_name,
+                "slug": slug,
+                "category": category,
+                "style": style,
+                "weight": weight,
+                "italic": is_italic,
                 "originalSize": original_size,
                 "compressedSize": len(woff2_bytes),
                 "savings": round((1 - len(woff2_bytes) / original_size) * 100),
                 "woff2": base64.b64encode(woff2_bytes).decode("ascii"),
-                "slug": slug,
                 "url": font_url,
+                "hash": font_hash,
             })
 
         except Exception:

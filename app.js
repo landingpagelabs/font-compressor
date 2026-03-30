@@ -128,31 +128,18 @@
     btn.disabled = true;
     btn.innerHTML = '<div class="spinner"></div> Compressing...';
 
-    // Process files sequentially to avoid index race conditions
-    var fileQueue = queuedFiles.slice();
-    var idx = 0;
+    var newEntries = [];
 
-    function processNext() {
-      if (idx >= fileQueue.length) {
-        btn.disabled = false;
-        btn.innerHTML = 'Compress to WOFF2';
-        $('#downloadAllBtn').style.display = compressedResults.length > 1 ? '' : 'none';
-        fetch('/api/library')
-          .then(function (res) { return res.json(); })
-          .then(function (data) { libraryData = data; });
-        return;
-      }
-      var currentIdx = idx;
-      var file = fileQueue[currentIdx];
-      idx++;
-      compressFile(file).then(function (result) {
+    var promises = queuedFiles.map(function (file, idx) {
+      return compressFile(file).then(function (result) {
         var now = new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
         if (result.duplicate) {
-          loadingEls[currentIdx].replaceWith(createDuplicateCard(result));
+          loadingEls[idx].replaceWith(createDuplicateCard(result));
           saveToHistory({ filename: file.name, type: 'duplicate', slug: result.slug, size: result.sizeWoff2, date: now });
         } else {
-          loadingEls[currentIdx].replaceWith(createResultCard(result));
+          loadingEls[idx].replaceWith(createResultCard(result));
           compressedResults.push(result);
+          newEntries.push(result);
           saveToHistory({
             filename: result.filename,
             type: result.alreadyCompressed ? 'saved' : 'compressed',
@@ -162,14 +149,27 @@
             date: now
           });
         }
-        processNext();
       }).catch(function (err) {
-        loadingEls[currentIdx].innerHTML = '<span style="color:#ef4444">Failed: ' + escapeHtml(file.name) + ' — ' + escapeHtml(err.message || String(err)) + '</span>';
-        loadingEls[currentIdx].className = 'result-card-loading';
-        processNext();
+        loadingEls[idx].innerHTML = '<span style="color:#ef4444">Failed: ' + escapeHtml(file.name) + ' — ' + escapeHtml(err.message || String(err)) + '</span>';
+        loadingEls[idx].className = 'result-card-loading';
       });
-    }
-    processNext();
+    });
+
+    Promise.all(promises).then(function () {
+      btn.disabled = false;
+      btn.innerHTML = 'Compress to WOFF2';
+      $('#downloadAllBtn').style.display = compressedResults.length > 1 ? '' : 'none';
+      if (newEntries.length > 0) {
+        fetch('/api/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newEntries)
+        }).then(function () {
+          return fetch('/api/library');
+        }).then(function (res) { return res.json(); })
+          .then(function (data) { libraryData = data; });
+      }
+    });
   }
 
   function compressFile(file) {
@@ -209,10 +209,17 @@
               alreadyCompressed: data.alreadyCompressed || false,
               filename: data.filename,
               fontName: data.fontName,
+              family: data.family,
+              slug: data.slug,
+              category: data.category,
+              style: data.style,
+              weight: data.weight,
+              italic: data.italic,
               originalSize: data.originalSize,
               compressedSize: data.compressedSize,
               savings: data.savings,
-              slug: data.slug,
+              url: data.url,
+              hash: data.hash,
               blob: blob
             });
           }
