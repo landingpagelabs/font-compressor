@@ -28,9 +28,6 @@
       if (tab === 'library' && libraryData.length === 0) {
         loadLibrary();
       }
-      if (tab === 'history') {
-        renderHistory();
-      }
     });
   });
 
@@ -159,6 +156,7 @@
       btn.disabled = false;
       btn.innerHTML = 'Compress to WOFF2';
       $('#downloadAllBtn').style.display = compressedResults.length > 1 ? '' : 'none';
+      renderHistory();
       if (newEntries.length > 0) {
         fetch('/api/save', {
           method: 'POST',
@@ -428,6 +426,7 @@
   }
 
   handleDeepLink();
+  renderHistory();
   window.addEventListener('hashchange', handleDeepLink);
 
   $('#librarySearch').addEventListener('input', function () {

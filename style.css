@@ -394,6 +394,10 @@ body {
    HISTORY TAB
    ===================== */
 
+#historySection {
+  margin-top: 40px;
+}
+
 .history-header {
   display: flex;
   align-items: center;
