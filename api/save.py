@@ -100,22 +100,29 @@ class handler(BaseHTTPRequestHandler):
             index = blob_get_index()
             original_count = len(index)
 
-            # Build a set of existing hashes for fast lookup
+            # Build sets for duplicate detection: by hash AND by slug+style
             existing_hashes = set()
+            existing_variants = set()  # (slug, style) pairs
             for fam in index:
                 for v in fam.get("variants", []):
                     if v.get("hash"):
                         existing_hashes.add(v["hash"])
+                    existing_variants.add((fam["slug"], v.get("style", "")))
 
             added = 0
             for entry in entries:
                 font_hash = entry.get("hash", "")
-                if font_hash in existing_hashes:
-                    continue  # Skip duplicates
-
                 slug = entry.get("slug", "")
+                style = entry.get("style", "Regular")
+
+                # Skip if same hash OR same family+style already exists
+                if font_hash in existing_hashes:
+                    continue
+                if (slug, style) in existing_variants:
+                    continue
+
                 new_variant = {
-                    "style": entry.get("style", "Regular"),
+                    "style": style,
                     "weight": entry.get("weight", 400),
                     "italic": entry.get("italic", False),
                     "file": entry.get("filename", ""),

@@ -214,11 +214,15 @@ class handler(BaseHTTPRequestHandler):
             # Hash the original font for duplicate detection
             font_hash = hash_bytes(font_bytes)
 
-            # Check index for duplicates
+            # Parse metadata from filename early (needed for slug+style duplicate check)
+            family_key, style = parse_filename(filename)
+            slug = family_key.lower()
+
+            # Check index for duplicates (by hash OR by slug+style)
             index = blob_get_index()
             for family in index:
                 for variant in family.get("variants", []):
-                    if variant.get("hash") == font_hash:
+                    if variant.get("hash") == font_hash or (family["slug"] == slug and variant.get("style") == style):
                         # Found a duplicate — return the deep link
                         return send_json(self, 200, {
                             "duplicate": True,
@@ -256,10 +260,8 @@ class handler(BaseHTTPRequestHandler):
                 # Compress TTF/OTF/WOFF to WOFF2
                 woff2_bytes, font_name = compress_font(font_bytes)
 
-            # Parse metadata from filename
-            family_key, style = parse_filename(filename)
+            # Metadata (family_key, style, slug already parsed above)
             family_name = human_family_name(family_key)
-            slug = family_key.lower()
             weight = get_weight(style)
             is_italic = "Italic" in style or "italic" in style
 
