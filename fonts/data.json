@@ -1,0 +1,637 @@
+[
+  {
+    "family": "Arsenal SC",
+    "slug": "arsenalsc",
+    "category": "sans-serif",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "ArsenalSC-Regular.woff2",
+        "sizeOriginal": 165848,
+        "sizeWoff2": 16768
+      }
+    ]
+  },
+  {
+    "family": "Big Shoulders",
+    "slug": "bigshoulders",
+    "category": "display",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "BigShoulders-Regular.woff2",
+        "sizeOriginal": 94396,
+        "sizeWoff2": 12708
+      },
+      {
+        "style": "Bold",
+        "weight": 700,
+        "italic": false,
+        "file": "BigShoulders-Bold.woff2",
+        "sizeOriginal": 94528,
+        "sizeWoff2": 12756
+      }
+    ]
+  },
+  {
+    "family": "Boldonse",
+    "slug": "boldonse",
+    "category": "display",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "Boldonse-Regular.woff2",
+        "sizeOriginal": 77168,
+        "sizeWoff2": 16524
+      }
+    ]
+  },
+  {
+    "family": "Bricolage Grotesque",
+    "slug": "bricolagegrotesque",
+    "category": "sans-serif",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "BricolageGrotesque-Regular.woff2",
+        "sizeOriginal": 90920,
+        "sizeWoff2": 17632
+      },
+      {
+        "style": "Bold",
+        "weight": 700,
+        "italic": false,
+        "file": "BricolageGrotesque-Bold.woff2",
+        "sizeOriginal": 90952,
+        "sizeWoff2": 17288
+      }
+    ]
+  },
+  {
+    "family": "Crimson Pro",
+    "slug": "crimsonpro",
+    "category": "serif",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "CrimsonPro-Regular.woff2",
+        "sizeOriginal": 106696,
+        "sizeWoff2": 13248
+      },
+      {
+        "style": "Italic",
+        "weight": 400,
+        "italic": true,
+        "file": "CrimsonPro-Italic.woff2",
+        "sizeOriginal": 108828,
+        "sizeWoff2": 13596
+      },
+      {
+        "style": "Bold",
+        "weight": 700,
+        "italic": false,
+        "file": "CrimsonPro-Bold.woff2",
+        "sizeOriginal": 107352,
+        "sizeWoff2": 13404
+      }
+    ]
+  },
+  {
+    "family": "DM Mono",
+    "slug": "dmmono",
+    "category": "monospace",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "DMMono-Regular.woff2",
+        "sizeOriginal": 48852,
+        "sizeWoff2": 10564
+      }
+    ]
+  },
+  {
+    "family": "Erica One",
+    "slug": "ericaone",
+    "category": "display",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "EricaOne-Regular.woff2",
+        "sizeOriginal": 24872,
+        "sizeWoff2": 4956
+      }
+    ]
+  },
+  {
+    "family": "Geist Mono",
+    "slug": "geistmono",
+    "category": "monospace",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "GeistMono-Regular.woff2",
+        "sizeOriginal": 78232,
+        "sizeWoff2": 11608
+      },
+      {
+        "style": "Bold",
+        "weight": 700,
+        "italic": false,
+        "file": "GeistMono-Bold.woff2",
+        "sizeOriginal": 78304,
+        "sizeWoff2": 12024
+      }
+    ]
+  },
+  {
+    "family": "Gloock",
+    "slug": "gloock",
+    "category": "serif",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "Gloock-Regular.woff2",
+        "sizeOriginal": 95156,
+        "sizeWoff2": 18816
+      }
+    ]
+  },
+  {
+    "family": "IBM Plex Mono",
+    "slug": "ibmplexmono",
+    "category": "monospace",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "IBMPlexMono-Regular.woff2",
+        "sizeOriginal": 133796,
+        "sizeWoff2": 10376
+      },
+      {
+        "style": "Bold",
+        "weight": 700,
+        "italic": false,
+        "file": "IBMPlexMono-Bold.woff2",
+        "sizeOriginal": 136008,
+        "sizeWoff2": 10640
+      }
+    ]
+  },
+  {
+    "family": "IBM Plex Serif",
+    "slug": "ibmplexserif",
+    "category": "serif",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "IBMPlexSerif-Regular.woff2",
+        "sizeOriginal": 160380,
+        "sizeWoff2": 13476
+      },
+      {
+        "style": "Italic",
+        "weight": 400,
+        "italic": true,
+        "file": "IBMPlexSerif-Italic.woff2",
+        "sizeOriginal": 170004,
+        "sizeWoff2": 14540
+      },
+      {
+        "style": "Bold",
+        "weight": 700,
+        "italic": false,
+        "file": "IBMPlexSerif-Bold.woff2",
+        "sizeOriginal": 161000,
+        "sizeWoff2": 13708
+      },
+      {
+        "style": "BoldItalic",
+        "weight": 700,
+        "italic": true,
+        "file": "IBMPlexSerif-BoldItalic.woff2",
+        "sizeOriginal": 169840,
+        "sizeWoff2": 14776
+      }
+    ]
+  },
+  {
+    "family": "Instrument Sans",
+    "slug": "instrumentsans",
+    "category": "sans-serif",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "InstrumentSans-Regular.woff2",
+        "sizeOriginal": 68028,
+        "sizeWoff2": 13972
+      },
+      {
+        "style": "Italic",
+        "weight": 400,
+        "italic": true,
+        "file": "InstrumentSans-Italic.woff2",
+        "sizeOriginal": 69900,
+        "sizeWoff2": 14716
+      },
+      {
+        "style": "Bold",
+        "weight": 700,
+        "italic": false,
+        "file": "InstrumentSans-Bold.woff2",
+        "sizeOriginal": 68084,
+        "sizeWoff2": 14196
+      },
+      {
+        "style": "BoldItalic",
+        "weight": 700,
+        "italic": true,
+        "file": "InstrumentSans-BoldItalic.woff2",
+        "sizeOriginal": 70004,
+        "sizeWoff2": 14908
+      }
+    ]
+  },
+  {
+    "family": "Instrument Serif",
+    "slug": "instrumentserif",
+    "category": "serif",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "InstrumentSerif-Regular.woff2",
+        "sizeOriginal": 69312,
+        "sizeWoff2": 15576
+      },
+      {
+        "style": "Italic",
+        "weight": 400,
+        "italic": true,
+        "file": "InstrumentSerif-Italic.woff2",
+        "sizeOriginal": 70868,
+        "sizeWoff2": 16224
+      }
+    ]
+  },
+  {
+    "family": "Italiana",
+    "slug": "italiana",
+    "category": "serif",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "Italiana-Regular.woff2",
+        "sizeOriginal": 27184,
+        "sizeWoff2": 5956
+      }
+    ]
+  },
+  {
+    "family": "Jet Brains Mono",
+    "slug": "jetbrainsmono",
+    "category": "monospace",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "JetBrainsMono-Regular.woff2",
+        "sizeOriginal": 114904,
+        "sizeWoff2": 17544
+      },
+      {
+        "style": "Bold",
+        "weight": 700,
+        "italic": false,
+        "file": "JetBrainsMono-Bold.woff2",
+        "sizeOriginal": 114828,
+        "sizeWoff2": 18140
+      }
+    ]
+  },
+  {
+    "family": "Jura",
+    "slug": "jura",
+    "category": "sans-serif",
+    "variants": [
+      {
+        "style": "Light",
+        "weight": 300,
+        "italic": false,
+        "file": "Jura-Light.woff2",
+        "sizeOriginal": 154308,
+        "sizeWoff2": 8260
+      },
+      {
+        "style": "Medium",
+        "weight": 500,
+        "italic": false,
+        "file": "Jura-Medium.woff2",
+        "sizeOriginal": 154488,
+        "sizeWoff2": 8672
+      }
+    ]
+  },
+  {
+    "family": "Libre Baskerville",
+    "slug": "librebaskerville",
+    "category": "serif",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "LibreBaskerville-Regular.woff2",
+        "sizeOriginal": 147584,
+        "sizeWoff2": 21804
+      }
+    ]
+  },
+  {
+    "family": "Lora",
+    "slug": "lora",
+    "category": "serif",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "Lora-Regular.woff2",
+        "sizeOriginal": 133888,
+        "sizeWoff2": 13048
+      },
+      {
+        "style": "Italic",
+        "weight": 400,
+        "italic": true,
+        "file": "Lora-Italic.woff2",
+        "sizeOriginal": 139328,
+        "sizeWoff2": 14272
+      },
+      {
+        "style": "Bold",
+        "weight": 700,
+        "italic": false,
+        "file": "Lora-Bold.woff2",
+        "sizeOriginal": 133828,
+        "sizeWoff2": 13076
+      },
+      {
+        "style": "BoldItalic",
+        "weight": 700,
+        "italic": true,
+        "file": "Lora-BoldItalic.woff2",
+        "sizeOriginal": 140332,
+        "sizeWoff2": 13936
+      }
+    ]
+  },
+  {
+    "family": "National Park",
+    "slug": "nationalpark",
+    "category": "display",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "NationalPark-Regular.woff2",
+        "sizeOriginal": 76424,
+        "sizeWoff2": 9836
+      },
+      {
+        "style": "Bold",
+        "weight": 700,
+        "italic": false,
+        "file": "NationalPark-Bold.woff2",
+        "sizeOriginal": 79208,
+        "sizeWoff2": 10216
+      }
+    ]
+  },
+  {
+    "family": "Nothing You Could Do",
+    "slug": "nothingyoucoulddo",
+    "category": "handwriting",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "NothingYouCouldDo-Regular.woff2",
+        "sizeOriginal": 32020,
+        "sizeWoff2": 10668
+      }
+    ]
+  },
+  {
+    "family": "Outfit",
+    "slug": "outfit",
+    "category": "sans-serif",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "Outfit-Regular.woff2",
+        "sizeOriginal": 54912,
+        "sizeWoff2": 10296
+      },
+      {
+        "style": "Bold",
+        "weight": 700,
+        "italic": false,
+        "file": "Outfit-Bold.woff2",
+        "sizeOriginal": 55392,
+        "sizeWoff2": 10316
+      }
+    ]
+  },
+  {
+    "family": "Pixelify Sans",
+    "slug": "pixelifysans",
+    "category": "display",
+    "variants": [
+      {
+        "style": "Medium",
+        "weight": 500,
+        "italic": false,
+        "file": "PixelifySans-Medium.woff2",
+        "sizeOriginal": 51072,
+        "sizeWoff2": 5824
+      }
+    ]
+  },
+  {
+    "family": "Poiret One",
+    "slug": "poiretone",
+    "category": "display",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "PoiretOne-Regular.woff2",
+        "sizeOriginal": 45244,
+        "sizeWoff2": 4636
+      }
+    ]
+  },
+  {
+    "family": "Red Hat Mono",
+    "slug": "redhatmono",
+    "category": "monospace",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "RedHatMono-Regular.woff2",
+        "sizeOriginal": 34488,
+        "sizeWoff2": 6388
+      },
+      {
+        "style": "Bold",
+        "weight": 700,
+        "italic": false,
+        "file": "RedHatMono-Bold.woff2",
+        "sizeOriginal": 34420,
+        "sizeWoff2": 6424
+      }
+    ]
+  },
+  {
+    "family": "Silkscreen",
+    "slug": "silkscreen",
+    "category": "display",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "Silkscreen-Regular.woff2",
+        "sizeOriginal": 31960,
+        "sizeWoff2": 5796
+      }
+    ]
+  },
+  {
+    "family": "Smooch Sans",
+    "slug": "smoochsans",
+    "category": "sans-serif",
+    "variants": [
+      {
+        "style": "Medium",
+        "weight": 500,
+        "italic": false,
+        "file": "SmoochSans-Medium.woff2",
+        "sizeOriginal": 59704,
+        "sizeWoff2": 6668
+      }
+    ]
+  },
+  {
+    "family": "Tektur",
+    "slug": "tektur",
+    "category": "sans-serif",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "Tektur-Regular.woff2",
+        "sizeOriginal": 75604,
+        "sizeWoff2": 4444
+      },
+      {
+        "style": "Medium",
+        "weight": 500,
+        "italic": false,
+        "file": "Tektur-Medium.woff2",
+        "sizeOriginal": 76248,
+        "sizeWoff2": 4604
+      }
+    ]
+  },
+  {
+    "family": "Work Sans",
+    "slug": "worksans",
+    "category": "sans-serif",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "WorkSans-Regular.woff2",
+        "sizeOriginal": 188916,
+        "sizeWoff2": 19464
+      },
+      {
+        "style": "Italic",
+        "weight": 400,
+        "italic": true,
+        "file": "WorkSans-Italic.woff2",
+        "sizeOriginal": 174280,
+        "sizeWoff2": 18164
+      },
+      {
+        "style": "Bold",
+        "weight": 700,
+        "italic": false,
+        "file": "WorkSans-Bold.woff2",
+        "sizeOriginal": 191304,
+        "sizeWoff2": 20240
+      },
+      {
+        "style": "BoldItalic",
+        "weight": 700,
+        "italic": true,
+        "file": "WorkSans-BoldItalic.woff2",
+        "sizeOriginal": 175772,
+        "sizeWoff2": 18812
+      }
+    ]
+  },
+  {
+    "family": "Young Serif",
+    "slug": "youngserif",
+    "category": "serif",
+    "variants": [
+      {
+        "style": "Regular",
+        "weight": 400,
+        "italic": false,
+        "file": "YoungSerif-Regular.woff2",
+        "sizeOriginal": 105136,
+        "sizeWoff2": 20164
+      }
+    ]
+  }
+]

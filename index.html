@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Font Compressor — Compress Fonts to WOFF2 Online</title>
+  <meta name="description" content="Compress and subset fonts to WOFF2 for the web. Upload TTF, OTF, or WOFF files and download optimised WOFF2. Browse a curated library of pre-compressed web fonts.">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Font Compressor — Compress Fonts to WOFF2 Online">
+  <meta property="og:description" content="Compress and subset fonts to WOFF2 for the web. Upload TTF, OTF, or WOFF files and download optimised WOFF2.">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Font Compressor — Compress Fonts to WOFF2 Online">
+  <meta name="twitter:description" content="Compress and subset fonts to WOFF2 for the web.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/style.css">
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Font Compressor",
+    "description": "Compress and subset fonts to WOFF2 for the web. Browse a curated library of pre-compressed web fonts.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Header -->
+    <header class="header">
+      <h1>Font Compressor</h1>
+      <p>Compress and subset fonts to WOFF2 for the web</p>
+    </header>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="compress">Compress</button>
+      <button class="tab-btn" data-tab="library">Library</button>
+    </div>
+
+    <!-- ==================== COMPRESS TAB ==================== -->
+    <div id="tab-compress" class="tab-content active">
+
+      <!-- Drop zone -->
+      <div class="drop-zone" id="dropZone">
+        <span class="drop-zone-icon">&#8681;</span>
+        <div class="drop-zone-text">Drop fonts here or click to upload</div>
+        <div class="drop-zone-hint">TTF, OTF, WOFF, WOFF2 — up to 4.5 MB per file, 20 files max</div>
+        <input type="file" id="fileInput" accept=".ttf,.otf,.woff,.woff2" multiple>
+      </div>
+
+      <!-- File list -->
+      <div class="file-list" id="fileList"></div>
+
+      <!-- Subset info -->
+      <div class="subset-info">Subset: Basic Latin (U+0020-007E)</div>
+
+      <!-- Compress button -->
+      <button class="compress-btn" id="compressBtn" disabled>
+        Compress to WOFF2
+      </button>
+
+      <!-- Results -->
+      <div id="results" style="display:none">
+        <div class="results-header">
+          <h2>Results</h2>
+          <button class="download-all-btn" id="downloadAllBtn">Download All (ZIP)</button>
+        </div>
+        <div id="resultsList"></div>
+      </div>
+
+    </div>
+
+    <!-- ==================== LIBRARY TAB ==================== -->
+    <div id="tab-library" class="tab-content">
+
+      <div class="library-controls">
+        <div class="search-wrapper">
+          <span class="search-icon">&#128269;</span>
+          <input type="text" class="library-search" id="librarySearch" placeholder="Search fonts...">
+        </div>
+
+        <div class="category-pills" id="categoryPills">
+          <button class="pill active" data-category="all">All</button>
+          <button class="pill" data-category="sans-serif">Sans Serif</button>
+          <button class="pill" data-category="serif">Serif</button>
+          <button class="pill" data-category="monospace">Monospace</button>
+          <button class="pill" data-category="display">Display</button>
+          <button class="pill" data-category="handwriting">Handwriting</button>
+        </div>
+
+        <div class="preview-controls">
+          <input type="text" class="preview-text-input" id="previewText" value="The quick brown fox jumps over the lazy dog">
+        </div>
+      </div>
+
+      <div class="font-count" id="fontCount"></div>
+      <div class="font-grid" id="fontGrid"></div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      Built by <a href="https://www.landingpagelabs.co" target="_blank" rel="noopener">Landing Page Labs</a>
+    </footer>
+
+  </div>
+
+  <!-- JSZip for multi-file downloads -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="/app.js"></script>
+
+</body>
+</html>
