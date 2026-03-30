@@ -31,6 +31,28 @@ def blob_put(pathname, data, content_type="application/octet-stream"):
 
 def blob_get_index():
     try:
+        # Use the authenticated GET endpoint to bypass CDN caching
+        req = urllib.request.Request(
+            f"{BLOB_API}/index.json",
+            headers={
+                "Authorization": f"Bearer {BLOB_TOKEN}",
+                "x-api-version": "7",
+            },
+        )
+        resp = urllib.request.urlopen(req)
+        result = json.loads(resp.read())
+        # The GET response wraps the data — fetch from the downloadUrl
+        download_url = result.get("downloadUrl") or result.get("url", "")
+        if download_url:
+            bust = f"{'&' if '?' in download_url else '?'}t={int(time.time() * 1000)}"
+            req2 = urllib.request.Request(download_url + bust)
+            resp2 = urllib.request.urlopen(req2)
+            return json.loads(resp2.read())
+    except Exception:
+        pass
+
+    # Fallback: list then fetch
+    try:
         req = urllib.request.Request(
             f"{BLOB_API}?prefix=index.json",
             headers={"Authorization": f"Bearer {BLOB_TOKEN}", "x-api-version": "7"},
@@ -39,7 +61,7 @@ def blob_get_index():
         data = json.loads(resp.read())
         blobs = data.get("blobs", [])
         if blobs:
-            url = blobs[0]["url"]
+            url = blobs[0]["downloadUrl"] or blobs[0]["url"]
             bust = f"{'&' if '?' in url else '?'}t={int(time.time() * 1000)}"
             req2 = urllib.request.Request(url + bust)
             resp2 = urllib.request.urlopen(req2)
@@ -76,6 +98,7 @@ class handler(BaseHTTPRequestHandler):
 
             # Read current index
             index = blob_get_index()
+            original_count = len(index)
 
             # Build a set of existing hashes for fast lookup
             existing_hashes = set()
@@ -126,6 +149,10 @@ class handler(BaseHTTPRequestHandler):
 
             # Sort families alphabetically
             index.sort(key=lambda f: f["family"].lower())
+
+            # Safety: never write an index smaller than what we read
+            if len(index) < original_count:
+                return send_json(self, 500, {"error": "Index corruption prevented. Read {0} families but would write {1}.".format(original_count, len(index))})
 
             # Single write
             blob_put("index.json", json.dumps(index, indent=2).encode(), "application/json")
