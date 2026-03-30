@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#ffffff"/>
+  <rect x="0" y="0" width="1200" height="4" fill="#2563eb"/>
+  <text x="600" y="260" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="700" fill="#111827" text-anchor="middle" letter-spacing="-2">Font Compressor</text>
+  <text x="600" y="330" font-family="system-ui, -apple-system, sans-serif" font-size="28" fill="#6b7280" text-anchor="middle">Compress and subset fonts to WOFF2 for the web</text>
+  <text x="600" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="20" fill="#9ca3af" text-anchor="middle">TTF, OTF, WOFF, WOFF2 — Free, no sign-up</text>
+  <text x="600" y="560" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="#d1d5db" text-anchor="middle">fontcompressor.com</text>
+</svg>

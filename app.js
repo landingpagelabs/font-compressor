@@ -136,7 +136,19 @@
         } else {
           loadingEls[idx].replaceWith(createResultCard(result));
           compressedResults.push(result);
-          newEntries.push(result);
+          newEntries.push({
+            hash: result.hash,
+            slug: result.slug,
+            family: result.family,
+            category: result.category,
+            style: result.style,
+            weight: result.weight,
+            italic: result.italic,
+            filename: result.filename,
+            url: result.url,
+            originalSize: result.originalSize,
+            compressedSize: result.compressedSize
+          });
           saveToHistory({
             filename: result.filename,
             type: result.alreadyCompressed ? 'saved' : 'compressed',
