@@ -214,6 +214,8 @@ class handler(BaseHTTPRequestHandler):
 
             font_b64 = data.get("font")
             filename = data.get("filename", "font.ttf")
+            # Clean filename: strip download suffixes like (1), (2) and spaces
+            filename = re.sub(r"\s*\(\d+\)", "", filename).replace(" ", "")
 
             if not font_b64:
                 return send_json(self, 400, {"error": "No font data provided."})
