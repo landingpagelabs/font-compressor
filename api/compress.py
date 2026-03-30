@@ -321,6 +321,7 @@ class handler(BaseHTTPRequestHandler):
             # Return compressed font + library info
             return send_json(self, 200, {
                 "duplicate": False,
+                "alreadyCompressed": is_woff2,
                 "filename": woff2_filename,
                 "fontName": font_name,
                 "originalSize": original_size,

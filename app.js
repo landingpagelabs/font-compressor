@@ -181,6 +181,7 @@
             var blob = new Blob([woff2Bytes], { type: 'font/woff2' });
             resolve({
               duplicate: false,
+              alreadyCompressed: data.alreadyCompressed || false,
               filename: data.filename,
               fontName: data.fontName,
               originalSize: data.originalSize,
@@ -207,13 +208,21 @@
     style.textContent = '@font-face { font-family: "' + fontFace + '"; src: url("' + fontUrl + '") format("woff2"); }';
     document.head.appendChild(style);
 
+    var statsHtml;
+    if (result.alreadyCompressed) {
+      statsHtml =
+        '<span>' + formatSize(result.compressedSize) + '</span>' +
+        '<span class="result-savings" style="background:var(--success-soft);color:var(--success)">Saved to library</span>';
+    } else {
+      statsHtml =
+        '<span>' + formatSize(result.originalSize) + ' &rarr; ' + formatSize(result.compressedSize) + '</span>' +
+        '<span class="result-savings">' + result.savings + '% smaller</span>';
+    }
+
     card.innerHTML =
       '<div class="result-card-top">' +
         '<span class="result-card-name">' + escapeHtml(result.filename) + '</span>' +
-        '<div class="result-card-stats">' +
-          '<span>' + formatSize(result.originalSize) + ' &rarr; ' + formatSize(result.compressedSize) + '</span>' +
-          '<span class="result-savings">' + result.savings + '% smaller</span>' +
-        '</div>' +
+        '<div class="result-card-stats">' + statsHtml + '</div>' +
       '</div>' +
       '<div class="result-preview" style="font-family:\'' + fontFace + '\',sans-serif">The quick brown fox jumps over the lazy dog</div>' +
       '<div class="result-card-actions">' +
