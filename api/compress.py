@@ -76,20 +76,51 @@ def hash_bytes(data):
     return hashlib.sha256(data).hexdigest()
 
 
+# Known style suffixes (longest first to match greedily)
+KNOWN_STYLES = [
+    "ExtraBoldItalic", "UltraBoldItalic", "SemiBoldItalic", "DemiBoldItalic",
+    "ExtraLightItalic", "UltraLightItalic", "BlackItalic", "BoldItalic",
+    "ThinItalic", "LightItalic", "MediumItalic", "HeavyItalic",
+    "ExtraBold", "UltraBold", "SemiBold", "DemiBold",
+    "ExtraLight", "UltraLight",
+    "Black", "Heavy", "Bold", "Medium", "Light", "Thin",
+    "Italic", "Regular",
+]
+
+
 def parse_filename(filename):
     stem = filename.rsplit(".", 1)[0] if "." in filename else filename
+    # Strip common prefixes
+    if stem.lower().startswith("subset-"):
+        stem = stem[7:]
+
+    # Try splitting on last hyphen first: FamilyName-Style
     parts = stem.rsplit("-", 1)
     if len(parts) == 2:
         family, style = parts
+        # Validate style is a known weight/style name
+        if style in KNOWN_STYLES or style in WEIGHT_MAP:
+            return family, style
+        # Style part might be part of the family name (e.g. Inter18pt)
+        # Fall through to style detection below
+        family = stem
+
     else:
         family = parts[0]
-        style = "Regular"
-    return family, style
+
+    # No valid split found — try to detect style from the end of the name
+    for s in KNOWN_STYLES:
+        if family.endswith(s) and len(family) > len(s):
+            return family[:-len(s)].rstrip("-"), s
+
+    return family, "Regular"
 
 
 def human_family_name(family):
     spaced = re.sub(r"([a-z])([A-Z])", r"\1 \2", family)
     spaced = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1 \2", spaced)
+    # Handle digits: "Inter18pt" -> "Inter 18pt"
+    spaced = re.sub(r"([a-zA-Z])(\d)", r"\1 \2", spaced)
     return spaced
 
 
