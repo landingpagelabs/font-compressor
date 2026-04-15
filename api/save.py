@@ -22,6 +22,7 @@ def blob_put(pathname, data, content_type="application/octet-stream"):
             "x-api-version": "7",
             "Content-Type": content_type,
             "x-add-random-suffix": "0",
+            "x-cache-control-max-age": "0",
         },
         method="PUT",
     )
