@@ -25,7 +25,7 @@
       $$('.tab-content').forEach(function (c) { c.classList.remove('active'); });
       btn.classList.add('active');
       $('#tab-' + tab).classList.add('active');
-      if (tab === 'library' && libraryData.length === 0) {
+      if (tab === 'library') {
         loadLibrary();
       }
     });
