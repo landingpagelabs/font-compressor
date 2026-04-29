@@ -107,6 +107,20 @@ def _match_style(text):
     return None
 
 
+def is_bare_style_filename(family):
+    """True if the parsed family is just made of style/weight words.
+    Catches uploads like bold.ttf, extralight.ttf, font-light-italic.ttf
+    where the original font family name was lost during a website extract.
+    """
+    tokens = [t for t in re.split(r"[-_\s]+", family.lower()) if t]
+    if not tokens:
+        return True
+    style_words = set(_STYLE_LOOKUP) | set(_WEIGHT_LOOKUP) | {
+        "extra", "ultra", "semi", "demi", "font",
+    }
+    return all(t in style_words for t in tokens)
+
+
 def parse_filename(filename):
     stem = filename.rsplit(".", 1)[0] if "." in filename else filename
     # Strip common prefixes
@@ -152,22 +166,23 @@ def get_weight(style):
     return WEIGHT_MAP.get(clean, 400)
 
 
+def _read_font_name(font):
+    name_table = font.get("name")
+    if not name_table:
+        return "Unknown"
+    for record in name_table.names:
+        if record.nameID == 4:
+            try:
+                return record.toUnicode()
+            except Exception:
+                pass
+    return "Unknown"
+
+
 def compress_font(font_bytes):
     font = TTFont(BytesIO(font_bytes))
+    font_name = _read_font_name(font)
 
-    # Extract font name
-    name_table = font.get("name")
-    font_name = "Unknown"
-    if name_table:
-        for record in name_table.names:
-            if record.nameID == 4:
-                try:
-                    font_name = record.toUnicode()
-                    break
-                except Exception:
-                    pass
-
-    # Subset to Basic Latin
     options = Options()
     options.layout_features = ["*"]
     options.name_IDs = ["*"]
@@ -176,9 +191,17 @@ def compress_font(font_bytes):
     options.recalc_timestamp = True
     options.drop_tables = []
 
-    subsetter = Subsetter(options=options)
-    subsetter.populate(unicodes=set(range(0x0020, 0x007F)))
-    subsetter.subset(font)
+    try:
+        subsetter = Subsetter(options=options)
+        subsetter.populate(unicodes=set(range(0x0020, 0x007F)))
+        subsetter.subset(font)
+    except Exception:
+        # Subsetter chokes on some commercial CFF/OTF fonts with complex
+        # layout features. Re-load the font untouched and ship the full
+        # WOFF2 so the upload still succeeds.
+        font.close()
+        font = TTFont(BytesIO(font_bytes))
+        font_name = _read_font_name(font)
 
     font.flavor = "woff2"
     buf = BytesIO()
@@ -234,6 +257,13 @@ class handler(BaseHTTPRequestHandler):
 
             # Parse metadata from filename early (needed for slug+style duplicate check)
             family_key, style = parse_filename(filename)
+            if is_bare_style_filename(family_key):
+                return send_json(self, 400, {
+                    "error": (
+                        f"Filename '{filename}' looks like a style word with no font family. "
+                        "Rename the file to include the family name (e.g. 'Lufga-Bold.otf') and try again."
+                    )
+                })
             slug = family_key.lower()
 
             # Check index for duplicates (by hash OR by slug+style)
@@ -326,8 +356,9 @@ class handler(BaseHTTPRequestHandler):
                 "hash": font_hash,
             })
 
-        except Exception:
-            return send_json(self, 500, {"error": "Compression failed. The file may not be a valid font."})
+        except Exception as e:
+            detail = str(e) or type(e).__name__
+            return send_json(self, 500, {"error": f"Compression failed: {detail}"})
 
     def do_OPTIONS(self):
         self.send_response(200)
